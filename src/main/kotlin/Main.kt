@@ -11,7 +11,8 @@ data class Response(
 
 // Global config
 val config = ConfigLoader.load()
-    
+val env = System.getenv("APP_ENV") ?: "unset"
+
 // Base response builders
 val ok = { message: String, -> links(message, listOf()) }
 val links = { 
@@ -64,6 +65,7 @@ fun main() {
 
     app.get("/") { c -> c.json(links(menuText, menuLinks)) }
     app.get("/about") { c -> c.json(links(aboutText, aboutLinks)) }
+    app.get("/env") { c-> c.json(ok("APP_ENV: $env; host: ${config.host}")) }
     app.get("/greet/{name}") { c -> c.json(ok(greet(c.pathParam("name")))) }
     app.get("/reverse/{input}") { c -> c.json(ok(reverse(c.pathParam("input")))) }
 

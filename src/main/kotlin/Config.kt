@@ -13,8 +13,8 @@ object ConfigLoader {
         val env = System.getenv("APP_ENV") ?: "local"
         
         return ConfigLoaderBuilder.default()
-            .addPropertySource(PropertySource.resource("/application.properties"))
             .addPropertySource(PropertySource.resource("/application-$env.properties", optional = true))
+            .addPropertySource(PropertySource.resource("/application.properties"))
             .build()
             .loadConfigOrThrow<AppConfig>()
     }
